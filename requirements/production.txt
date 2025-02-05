@@ -1,0 +1,4 @@
+# Requirements file for production, store base and production specific dependencies
+
+# Include base dependencies
+-r base.txt

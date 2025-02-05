@@ -1,0 +1,4 @@
+# Requirements file for development, store base and development specific dependencies
+
+# Include base dependencies
+-r base.txt
