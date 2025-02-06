@@ -61,11 +61,11 @@ class AddressModelMixin(models.Model):
 class VehicleModelMixin(models.Model):
     """Base mixins model for vehicle, all type of vehicle model will be inherited from this."""
 
-    brand = models.CharField(max_length=255, null=True, blank=True)
+    brand = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
     year = models.PositiveIntegerField(null=True, blank=True)
     mileage = models.DecimalField(
-        max_digits=12, decimal_places=4, null=True, blank=True
+        max_digits=12, decimal_places=2, null=True, blank=True
     )
 
     class Meta:

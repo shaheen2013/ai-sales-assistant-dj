@@ -14,3 +14,4 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT", 5432),
     }
 }
+openai_api_key = os.environ.get("OPENAI_API_KEY")
