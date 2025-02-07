@@ -7,16 +7,16 @@ from langchain.memory import ConversationBufferMemory
 class CarSalesAssistant:
     def __init__(self, car_objects: list, temperature=0.7):
         """ "
-        Initialize the CarSalesAssistant with a temperature and a car data dataframe.
+        Initialize the CarSalesAssistant with a temperature and a querysets of car details.
 
         params:
         car_objects: List of CarDetails Model objects
         """
 
-        # Convert querysets to a dataframe
+        # Convert querysets to a pandas dataframe
         self.df_inventory = pd.DataFrame(list(car_objects))
 
-        # Convert inventory to a string for the prompt
+        # Convert inventory dataframe to a string for the prompt
         inventory_str = self.df_inventory.to_string(index=False)
 
         self.system_prompt = f"""
@@ -40,8 +40,13 @@ class CarSalesAssistant:
         - "Want to experience it in person? Let’s book a test drive!"
         """
 
+        # Initialize the openai instance with langchain
         self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=temperature)
+
+        # Memory buffer initialize
         self.memory = ConversationBufferMemory(return_messages=True)
+
+        # To tract the state of conversations.
         self.conversation_state = {
             "last_vehicle": None,
             "available_models": None,
@@ -53,12 +58,18 @@ class CarSalesAssistant:
         }
 
     def get_available_models(self, brand):
-        """Filter the inventory for available models of the given brand."""
+        """
+        Filter the inventory for available models of the given brand.
+
+        params: brand: str, brand name, It will check the brand name is available or not in the dataframe or dataset.
+        """
         return self.df_inventory[
             self.df_inventory["brand"].str.lower() == brand.lower()
         ]
 
     def select_vehicle(self, user_input):
+        """For the user given model, fetch the details of car."""
+
         if not self.conversation_state["available_models"]:
             return "Please specify a brand first so I can show you available options."
 
@@ -93,6 +104,10 @@ class CarSalesAssistant:
         )
 
     def start_collecting_contact_details(self, user_input):
+        """
+        ** params:
+        ** user_input: str, if the message has word book or schedule, change the state and go for contact details collection.
+        """
         if "book" in user_input.lower() or "test drive" in user_input.lower():
             self.conversation_state["booking"] = True
             self.conversation_state["scheduling_demo"] = False
@@ -108,6 +123,11 @@ class CarSalesAssistant:
         return "Sure! Let's get started. What's your **first name**?"
 
     def collect_contact_details(self, user_input):
+        """ "
+        This function is responsible for collecting user contact details step by step with the given flow.
+        params:
+        user_input: str, User given answer for the question flow.
+        """
         detail_order = [
             "first_name",
             "last_name",
@@ -118,6 +138,8 @@ class CarSalesAssistant:
             "city",
             "country",
         ]
+
+        # Question flow for asking to collect contact details
         next_question = {
             "first_name": "Got it, {first_name}! What's your **last name**?",
             "last_name": "Thanks, {first_name} {last_name}. What's your **email address**?",

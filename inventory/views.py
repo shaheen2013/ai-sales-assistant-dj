@@ -4,20 +4,25 @@ from rest_framework.views import APIView
 from utils.inventory.car_sales_assistant import CarSalesAssistant
 from . import serializers
 from . import models
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.permissions import IsAuthenticated
+from chat_history.models import ChatHistory
 
 
 class CarSalesAssistantAPIView(APIView):
     """Car Sales Assistant API view"""
 
-    # Car sale assistant chat api
+    @swagger_auto_schema(
+        tags=["Car AI Assistant"], request_body=serializers.UserInputSerializer
+    )
     def post(self, request, *args, **kwargs):
         """
-        api need to call with a dict with key: message and value.
-        Sample User Input Data:
+        Sample Input Data:
         {
-            "message": "User Message",
+            "message": "Content",
         }
         """
+
         data = request.data
         user_input = data.get("message")
         if not user_input:
@@ -41,8 +46,15 @@ class CarSalesAssistantAPIView(APIView):
             # Run the conversation using the user input and get the response from the car sale assistant
             response = car_sales_bot.run_conversation(user_input)
 
-            return Response({"response": response})
+            # If user is authenticated, save the message and response to the chat history model
+            if request.user.is_authenticated:
+                # Save Chat histry
+                chat_history = ChatHistory(
+                    user=request.user, message=user_input, response=response
+                )
+                chat_history.save()
 
+            return Response({"response": response})
         except Exception as e:
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
