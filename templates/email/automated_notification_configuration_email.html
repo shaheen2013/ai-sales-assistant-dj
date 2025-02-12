@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+         {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+        }
+      }
+      .container {
+         {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+      h2 {
+         {
+          color: #2c3e50;
+        }
+      }
+      p {
+         {
+          font-size: 16px;
+          color: #555;
+        }
+      }
+      .footer {
+         {
+          margin-top: 20px;
+          font-size: 14px;
+          color: #888;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h4>🎉 Dear {{first_name}} {{last_name}}!</h4>
+      <p>
+        You have successfully set up automated notifications with Teezai. <br />
+        From now on, you'll receive timely updates and alerts directly via your
+        chosen channels. 🚀 <br /><br />
+      </p>
+      {% if notification_methods %}
+      <p>Notification Methods: {{notification_methods}}</p>
+      {% endif %}
+      <p>
+        If you ever need to modify your preferences, feel free to reach out.
+      </p>
+      <p>Best Regards,<br /><b>Team Teezai</b></p>
+      <div class="footer">
+        <p>📧 support@teezai.com</p>
+      </div>
+    </div>
+  </body>
+</html>

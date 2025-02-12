@@ -25,7 +25,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(
-        "api/",
+        "docs/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
@@ -36,6 +36,9 @@ urlpatterns = [
         include(("authentication.urls", "authentication"), namespace="authentication"),
     ),
     path("api/", include(("inventory.urls", "invenory"), namespace="inventory")),
+    path(
+        "api/", include(("notification.urls", "notification"), namespace="notification")
+    ),
 ]
 # Serve static/media files in development mode
 if settings.DEBUG:
