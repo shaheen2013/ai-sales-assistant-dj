@@ -75,10 +75,11 @@ class VehicleModelMixin(models.Model):
 class ItemModelMixin(models.Model):
     """Base mixins model for items, all type of item model will be inherited from this."""
 
-    name = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=512)
+    code = models.CharField(max_length=512, unique=True, db_index=True)
     description = models.TextField(null=True, blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    quantity = models.PositiveIntegerField(null=True, blank=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    stock_quantity = models.PositiveIntegerField()
 
     class Meta:
         abstract = True

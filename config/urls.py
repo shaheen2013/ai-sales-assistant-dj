@@ -30,7 +30,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("", lambda request: redirect("api/")),
+    path("", lambda request: redirect("docs/")),
     path(
         "api/",
         include(("authentication.urls", "authentication"), namespace="authentication"),
@@ -39,6 +39,7 @@ urlpatterns = [
     path(
         "api/", include(("notification.urls", "notification"), namespace="notification")
     ),
+    path("api/", include(("payments.urls", "payments"), namespace="payments")),
 ]
 # Serve static/media files in development mode
 if settings.DEBUG:

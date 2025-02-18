@@ -14,3 +14,11 @@ class UserInputSerializer(serializers.Serializer):
     """Serializer for user input"""
 
     message = serializers.CharField()
+
+
+class VehicleItemInventorySerializer(serializers.ModelSerializer):
+    """Serializer for VehicleItemInventory model"""
+
+    class Meta:
+        model = models.VehicleItemInventory
+        fields = "__all__"

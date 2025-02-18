@@ -7,4 +7,9 @@ urlpatterns = [
         views.CarSalesAssistantAPIView.as_view(),
         name="car_sale_chat",
     ),
+    path(
+        "v1/vehicle-item-chat/",
+        views.VehicleItemChatAPI.as_view(),
+        name="vehicle_item_chat",
+    ),
 ]
